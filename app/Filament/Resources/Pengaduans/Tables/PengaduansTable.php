@@ -7,6 +7,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Actions\ViewAction;
 use Filament\Actions\EditAction;
+use Filament\Tables\Filters\SelectFilter;
 
 class PengaduansTable
 {
@@ -32,6 +33,26 @@ class PengaduansTable
                 TextColumn::make('created_at')
                     ->label('Tanggal')
                     ->dateTime(),
+            ])
+            ->filters([
+                // Filter berdasarkan siswa
+                SelectFilter::make('user_id')
+                    ->label('Siswa')
+                    ->relationship('user', 'name')
+                    ->visible(fn () => auth()->user()?->role === 'admin'),
+
+                // Filter berdasarkan status
+                SelectFilter::make('status')
+                    ->options([
+                        'menunggu' => 'Menunggu',
+                        'diproses' => 'Diproses',
+                        'selesai' => 'Selesai',
+                    ]),
+
+                // Filter berdasarkan kategori
+                SelectFilter::make('kategori_id')
+                    ->label('Kategori')
+                    ->relationship('kategori', 'ket_kategori'),
             ])
             ->headerActions([
                 \Filament\Actions\CreateAction::make()

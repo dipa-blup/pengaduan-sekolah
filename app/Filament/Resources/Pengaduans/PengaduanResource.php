@@ -13,6 +13,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class PengaduanResource extends Resource
 {
@@ -37,6 +38,17 @@ class PengaduanResource extends Resource
         return [
             //
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+
+        if (auth()->user()?->role === 'siswa') {
+            return $query->where('user_id', auth()->id());
+        }
+
+        return $query;
     }
 
     public static function getPages(): array
