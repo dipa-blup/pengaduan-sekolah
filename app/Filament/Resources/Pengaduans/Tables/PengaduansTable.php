@@ -41,7 +41,6 @@ class PengaduansTable
                     ->relationship('user', 'name')
                     ->visible(fn () => auth()->user()?->role === 'admin'),
 
-                // Filter berdasarkan status
                 SelectFilter::make('status')
                     ->options([
                         'menunggu' => 'Menunggu',
@@ -49,7 +48,6 @@ class PengaduansTable
                         'selesai' => 'Selesai',
                     ]),
 
-                // Filter berdasarkan kategori
                 SelectFilter::make('kategori_id')
                     ->label('Kategori')
                     ->relationship('kategori', 'ket_kategori'),
